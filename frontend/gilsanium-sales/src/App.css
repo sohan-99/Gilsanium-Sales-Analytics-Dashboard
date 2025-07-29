@@ -1,1 +1,34 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
+
+@theme {
+  --color-primary-500: #414FF4; 
+  --color-secondary-200: #2B3674;
+  --color-testingShade-100: #EFEFEF;
+  --color-testingShade-200: #FFFFFF;
+
+  --font-family-sans: 'Inter Tight', sans-serif;
+}
+
+/* Apply Inter Tight font globally */
+* {
+  font-family: 'Inter Tight', sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
