@@ -1,19 +1,19 @@
-// Header component for the dashboard
-
+import React from "react";
+import HeaderPic from "../../public/Profile Image.png";
+import Headerbutton from "../../public/CaretDown.png";
+import type { UserProfileType } from "./Header.interface";
 interface HeaderProps {
-  onToggleSidebar: () => void;
+  onMenuClick: () => void;
+  user: UserProfileType;
 }
 
-const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
+const Header: React.FC<HeaderProps> = ({ onMenuClick, user }) => {
   return (
-    <div className="bg-white border-b border-gray-200 px-6 py-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          {/* Mobile menu button */}
-          <button
-            onClick={onToggleSidebar}
-            className="lg:hidden p-2 text-gray-600 hover:text-gray-900"
-          >
+    <header className="bg-white border-b border-white-100">
+      <div className="flex items-center justify-between h-16 lg:px-10 px-5 py-[19.5px]">
+        {/* Left Section */}
+        <div className="flex items-center">
+          <button onClick={onMenuClick} className="lg:hidden mr-2">
             <svg
               className="w-6 h-6"
               fill="none"
@@ -28,46 +28,35 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
               />
             </svg>
           </button>
-          <h2 className="text-2xl font-bold text-gray-800">Sales Overview</h2>
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <span>January</span>
-            <span>to</span>
-            <span>December</span>
+          <div className="text-secondary-200">
+            <h1 className="text-lg font-medium">Sales Overview</h1>
+            <p className="text-xs font-normal">
+              Monitor all your content activity
+            </p>
           </div>
         </div>
-        <div className="flex items-center space-x-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <svg
-              className="absolute right-3 top-2.5 w-5 h-5 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+
+        {/* Right Section - User Profile */}
+        <div className="flex items-center text-secondary-200">
+          <img
+            src={HeaderPic}
+            alt="Profile"
+            className="w-[36px] h-[36px] rounded-full"
+          />
+          <div className="hidden sm:block text-left mr-[10px] ml-[8px]">
+            <p className="text-md font-medium ">{user?.name || "Amiril mu’"}</p>
+            <p className="text-[10px] font-normal ">{user?.email || "amirilmu@mail.example"}</p>
           </div>
-          <button className="bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors">
-            Add new
+          <button className="">
+            <img
+            src={ Headerbutton}
+            alt="Profile"
+            className="w-[36px] h-[36px] rounded-full"
+          />
           </button>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-600">All Users</span>
-            <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">A</span>
-            </div>
-          </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

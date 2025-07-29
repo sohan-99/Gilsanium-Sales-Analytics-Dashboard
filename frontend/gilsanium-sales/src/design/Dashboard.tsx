@@ -15,7 +15,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 font-sans">
+    <div className="flex  bg-gray-50 font-sans">
       <Slidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
       <MainPart onToggleSidebar={handleToggleSidebar} />
     </div>

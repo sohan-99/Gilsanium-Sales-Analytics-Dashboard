@@ -5,7 +5,7 @@ import SalesChart from "../components/SalesChart";
 import ProductMarketing from "../components/ProductMarketing";
 import RegionalSales from "../components/RegionalSales";
 import FeaturedProducts from "../components/FeaturedProducts";
-
+import DatePiker from "../components/DatePiker"
 interface MainPartProps {
   onToggleSidebar: () => void;
 }
@@ -14,7 +14,7 @@ const MainPart: React.FC<MainPartProps> = ({ onToggleSidebar }) => {
   return (
     <div className="flex-1 bg-gray-50 overflow-auto">
       <Header onToggleSidebar={onToggleSidebar} />
-
+<DatePiker />
       {/* Main Content */}
       <div className="p-6">
         {/* Stats Cards */}
