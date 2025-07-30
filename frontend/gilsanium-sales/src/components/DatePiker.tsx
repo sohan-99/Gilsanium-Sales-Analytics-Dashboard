@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import StatsCard from "../components/StatusCard";
 
 // Example stats data (replace with real data as needed)
 const statsData = [
@@ -242,12 +241,7 @@ const DashboardStats: React.FC = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statsData.map((stats) => (
-          <StatsCard key={stats.id} stats={stats} />
-        ))}
-      </div>
+     
     </div>
   );
 };

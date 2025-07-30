@@ -1,53 +1,23 @@
 // Main dashboard content area
 import Header from "../components/Header";
-import StatsCards from "../components/StatsCards";
-import SalesChart from "../components/SalesChart";
-import ProductMarketing from "../components/ProductMarketing";
-import RegionalSales from "../components/RegionalSales";
-import FeaturedProducts from "../components/FeaturedProducts";
-import DatePiker from "../components/DatePiker"
+import StatsCards from "../components/StatusCard";
+import DatePiker from "../components/DatePiker";
 interface MainPartProps {
   onToggleSidebar: () => void;
 }
 
 const MainPart: React.FC<MainPartProps> = ({ onToggleSidebar }) => {
   return (
-    <div className="flex-1 bg-gray-50 overflow-auto">
+    <div className="flex-1 bg-white overflow-auto">
       <Header onToggleSidebar={onToggleSidebar} />
-<DatePiker />
+      <DatePiker />
       {/* Main Content */}
-      <div className="p-6">
-        {/* Stats Cards */}
+      <div className="px-10">
         <StatsCards />
-
-        {/* Chart and Product Marketing Section */}
-        <div className="grid grid-cols-12 gap-6 mb-6">
-          {/* Chart Section */}
-          <div className="col-span-8">
-            <SalesChart />
-          </div>
-
-          {/* Product Marketing */}
-          <div className="col-span-4">
-            <ProductMarketing />
-          </div>
-        </div>
-
-        {/* Bottom Section - Regional Sales and Featured Products */}
-        <div className="grid grid-cols-12 gap-6">
-          {/* Regional Sales */}
-          <div className="col-span-6">
-            <RegionalSales />
-          </div>
-
-          {/* Featured Products */}
-          <div className="col-span-6">
-            <FeaturedProducts />
-          </div>
-        </div>
       </div>
     </div>
   );
 };
 
 export default MainPart;
+
