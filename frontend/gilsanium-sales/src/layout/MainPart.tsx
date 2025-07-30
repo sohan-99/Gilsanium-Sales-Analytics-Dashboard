@@ -2,6 +2,7 @@
 import Header from "../components/Header";
 import StatsCards from "../components/StatusCard";
 import DatePiker from "../components/DatePiker";
+import SealsAnalysis from "../components/SealsAnalysis";
 interface MainPartProps {
   onToggleSidebar: () => void;
 }
@@ -14,6 +15,7 @@ const MainPart: React.FC<MainPartProps> = ({ onToggleSidebar }) => {
       {/* Main Content */}
       <div className="px-10">
         <StatsCards />
+        <SealsAnalysis />
       </div>
     </div>
   );
