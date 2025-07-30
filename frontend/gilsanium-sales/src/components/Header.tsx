@@ -1,6 +1,4 @@
 import React from "react";
-import HeaderPic from "../../public/Profile Image.png";
-// import Headerbutton from "../../public/CaretDown.png";
 import type { UserProfileType } from "./Header.interface";
 interface HeaderProps {
   onMenuClick: () => void;
@@ -36,21 +34,56 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, user }) => {
           </div>
         </div>
 
-        {/* Right Section - User Profile */}
+        {/* Right Section - Icons and User Profile */}
         <div className="flex items-center text-secondary-200">
+          <div className="flex items-center space-x-4 mr-6">
+           <div className="border border-[#EFEFEF] rounded-[8px]">
+             <button className="p-2 ">
+              <img
+                src="/MagnifyingGlass.svg"
+                alt="Search"
+                className="w-5 h-5"
+              />
+            </button>
+           </div>
+           <div className="border border-[#EFEFEF] rounded-[8px]">
+             <button className="p-2 ">
+              <img
+                src="/Alert-Bell-Notification-2--Streamline-Ultimate.svg"
+                alt="Notifications"
+                className="w-5 h-5"
+              />
+             
+            </button>
+           </div>
+           <div className="border border-[#EFEFEF] rounded-[8px]">
+             <button className="p-2">
+              <img
+                src="/Filter-Sort-Lines-Descending--Streamline-Ultimate.svg"
+                alt="Filter"
+                className="w-5 h-5"
+              />
+            </button>
+           </div>
+          <span>|</span>
+          </div>
           <img
-            src={HeaderPic}
+             src="/Profileimage Container.svg"
             alt="Profile"
-            className="w-[36px] h-[36px] rounded-full"
+            className="w-[36px] h-[36px] "
           />
           <div className="hidden sm:block text-left mr-[10px] ml-[8px]">
             <p className="text-md font-medium ">{user?.name || "Amiril mu’"}</p>
-            <p className="text-[10px] font-normal ">{user?.email || "amirilmu@mail.example"}</p>
+            <p className="text-[10px] font-normal ">
+              {user?.email || "amirilmu@mail.example"}
+            </p>
           </div>
           <button className="">
-           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
+           <img
+              src="/CaretDown.svg"
+              alt="Profile"
+              className="w-5 h-5"
+            />
           </button>
         </div>
       </div>

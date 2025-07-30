@@ -119,14 +119,16 @@ const Slidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           to="/"
           className="flex items-center justify-between space-x-24"
         >
-          <img src="/Logon.png" alt="" className="w-[76px] h-[30px]" />
-          <img src="/openClosedB.png" alt="Close" className="w-6 h-6 filter" />
+          <img src="/Logo.svg" alt="" className="w-[76px] h-[30px]" />
+         <div className="border border-[#DFDFDF] rounded-[8px] p-2">
+           <img src="/Sun.svg" alt="Close" className="w-6 h-6 filter" />
+         </div>
         </NavLink>
         <button
           onClick={onClose}
           className="lg:hidden p-1 rounded hover:bg-gray-200 transition-colors"
         >
-          <img src="/openClosedB.png" alt="Close" className="w-6 h-6 filter" />
+          <img src="/Sun.svg" alt="Close" className="w-6 h-6 filter" />
         </button>
       </div>
 
@@ -157,9 +159,9 @@ const Slidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             <div className="flex items-center mb-3">
               <div className="rounded-lg flex items-center justify-center mr-3">
                 <img
-                  src="/Upgrade Icon Container.png"
+                  src="/Upgrade Icon Container.svg"
                   alt=""
-                  className="w-[28px] h-[28px]"
+                  className="w-6 h-[24px]"
                 />
               </div>
               <div>

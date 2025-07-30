@@ -19,19 +19,19 @@ export const menuItems: MenuItemType[] = [
   {
     id: "overview",
     label: "Overview",
-    icon: "/overview.png",
+    icon: "/Icon.svg",
     href: "/dashboard",
   },
   {
     id: "profile",
     label: "Profile",
-    icon: "/profile.png",
+    icon: "/Icon Container (2).svg",
     href: "/profile",
   },
   {
     id: "product",
     label: "Product",
-    icon: "/product.png",
+    icon: "/Icon (1).svg",
     href: "/products",
     isExpandable: true,
     children: [
@@ -54,13 +54,13 @@ export const menuItems: MenuItemType[] = [
   {
     id: "customers",
     label: "Customers",
-    icon: "/Customer.png",
+    icon: "/Icon (2).svg",
     href: "/customers",
   },
   {
     id: "message",
     label: "Message",
-    icon: "/message.png",
+    icon: "/Icon Container (1).svg",
     href: "/messages",
     badge: 20,
   },
@@ -70,19 +70,19 @@ export const accountItems: MenuItemType[] = [
   {
     id: "settings",
     label: "Settings",
-    icon: "/setting.png",
+    icon: "/Settings Icon Container.svg",
     href: "/settings",
   },
   {
     id: "help",
     label: "Help",
-    icon: "/Help.png",
+    icon: "/Help Icon Container.svg",
     href: "/help",
   },
   {
     id: "logout",
     label: "Log Out",
-    icon: "/logout.png",
+    icon: "/Logout Icon Container.svg",
     href: "/logout",
   },
 ];
