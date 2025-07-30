@@ -140,7 +140,7 @@ const SealsAnalysis: React.FC = () => {
             <img src="/CaretDown (1).svg" alt="" className="w-4 h-4" />
           </button>
         </div>
-        <ul className="divide-y divide-gray-100">
+        <ul className="-divide-y divide-gray-100">
           {productMonitoring.map((item, _idx) => (
             <li
               key={item.rank}
@@ -150,7 +150,7 @@ const SealsAnalysis: React.FC = () => {
             >
               {item.highlight && (
                 <span
-                  className="absolute left-0 top-2 bottom-2 w-2 rounded-l-[8px] bg-[#7B61FF]"
+                  className="absolute left-0 top-2 bottom-2 w-2 rounded-r-[8px] bg-[#7B61FF]"
                   style={{ height: "calc(100% - 16px)" }}
                 ></span>
               )}
