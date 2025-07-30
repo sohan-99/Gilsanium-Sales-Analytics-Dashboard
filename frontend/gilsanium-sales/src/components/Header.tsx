@@ -1,6 +1,6 @@
 import React from "react";
 import HeaderPic from "../../public/Profile Image.png";
-import Headerbutton from "../../public/CaretDown.png";
+// import Headerbutton from "../../public/CaretDown.png";
 import type { UserProfileType } from "./Header.interface";
 interface HeaderProps {
   onMenuClick: () => void;
@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onMenuClick, user }) => {
   return (
-    <header className="bg-white border-b border-white-100">
+    <header className="bg-white border-b border-[#EFEFEF]">
       <div className="flex items-center justify-between h-16 lg:px-10 px-5 py-[19.5px]">
         {/* Left Section */}
         <div className="flex items-center">
@@ -48,11 +48,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, user }) => {
             <p className="text-[10px] font-normal ">{user?.email || "amirilmu@mail.example"}</p>
           </div>
           <button className="">
-            <img
-            src={ Headerbutton}
-            alt="Profile"
-            className="w-[36px] h-[36px] rounded-full"
-          />
+           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </button>
         </div>
       </div>
