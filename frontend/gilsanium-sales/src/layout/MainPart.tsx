@@ -4,14 +4,18 @@ import StatsCards from "../components/StatusCard";
 import DatePiker from "../components/DatePiker";
 import SealsAnalysis from "../components/SealsAnalysis";
 import MapAndFilterData from "../components/MapAndFilterData";
-interface MainPartProps {
-  onToggleSidebar: () => void;
-}
 
-const MainPart: React.FC<MainPartProps> = ({ onToggleSidebar }) => {
+const MainPart: React.FC = () => {
+  // Mock user data (replace with real user data as needed)
+  const user = {
+    name: "Amiril mu’",
+    email: "amirilmu@mail.example",
+    avatar: "/Profileimage Container.svg",
+  };
+  const handleMenuClick = () => {};
   return (
     <div className="flex-1 bg-white overflow-auto">
-      <Header onToggleSidebar={onToggleSidebar} />
+      <Header onMenuClick={handleMenuClick} user={user} />
       <DatePiker />
       {/* Main Content */}
       <div className="px-10">
@@ -24,4 +28,3 @@ const MainPart: React.FC<MainPartProps> = ({ onToggleSidebar }) => {
 };
 
 export default MainPart;
-

@@ -1,43 +1,163 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import mapboxgl from "mapbox-gl";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+// sk.eyJ1IjoibWFydWYtNjkiLCJhIjoiY21kcjl3anh3MGJodjJrczZsdjRrbHlmYiJ9.bQqom_15imhYIA3fWbkjDg
+const calendarIcon = (
+  <span className="flex items-center justify-center bg-[#F7F7F9] rounded-lg p-1.5 ml-2">
+    <svg width="20" height="20" fill="none" stroke="#8C929A">
+      <rect x="3" y="5" width="14" height="12" rx="2" strokeWidth="2" />
+      <path d="M7 3v2M13 3v2M3 9h14" strokeWidth="2" />
+    </svg>
+  </span>
+);
+
+const inputClass =
+  "w-32 text-gray-500 text-lg font-medium tracking-wide bg-white outline-none";
+
 const MapAndFilterData = () => {
   const [showFilters, setShowFilters] = useState(false);
+
+  // Filter States
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [sortOrder, setSortOrder] = useState("Low to High (Lowest First)");
+  const [priceRange, setPriceRange] = useState(50);
+
+  // Example coordinates for items (San Francisco area)
   const items = [
     {
       name: "Laptop",
       price: "$1,240",
       image: "/e950145c72e49e7de18fa4432cecc3cc43d4dbd0.png",
+      lngLat: [-122.494, 37.786],
     },
     {
       name: "bag",
       price: "$1,240",
       image: "/110ac03843eaa6d28e5deaf9f5a3f6f757f8fdc4.jpg",
+      lngLat: [-122.472, 37.771],
     },
     {
       name: "Monbitor",
       price: "$1,240",
       image: "/2489d9e21fd5a6ecbfd7fd619f5cc0969ddeb4b6.jpg",
+      lngLat: [-122.447, 37.759],
     },
     {
       name: "iPhone",
       price: "$1,240",
       image: "/5e1f4adcf39c20de9a0de0f18c89bb26f2c28c5e.png",
+      lngLat: [-122.505, 37.743],
     },
   ];
+
+  // Date Range Shortcuts
+  const handleToday = () => {
+    const today = new Date();
+    setStartDate(today);
+    setEndDate(today);
+  };
+
+  const handleThisWeek = () => {
+    const now = new Date();
+    const first = now.getDate() - now.getDay();
+    const last = first + 6;
+    const start = new Date(now);
+    start.setDate(first);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(now);
+    end.setDate(last);
+    end.setHours(23, 59, 59, 999);
+    setStartDate(start);
+    setEndDate(end);
+  };
+
+  const handleThisMonth = () => {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), now.getMonth(), 1);
+    const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    setStartDate(start);
+    setEndDate(end);
+  };
+
+  // Reset Handlers
+  const resetDateRange = () => {
+    setStartDate(null);
+    setEndDate(null);
+  };
+
+  const resetSortOrder = () => {
+    setSortOrder("Low to High (Lowest First)");
+  };
+
+  const resetPriceRange = () => {
+    setPriceRange(50);
+  };
+
+  const resetAllFilters = () => {
+    resetDateRange();
+    resetSortOrder();
+    resetPriceRange();
+  };
+
+  // Mapbox setup
+  const mapContainer = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
+
+  useEffect(() => {
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoibWFydWYtNjkiLCJhIjoiY21kcThhZnUxMDM2ZjJqcjV3amtpYnNmOCJ9.1tKWcQqfekzdgMZGoUubfg";
+    if (mapRef.current) return; // Prevent re-initialization
+    if (!mapContainer.current) return;
+    const map = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/light-v11",
+      center: [-122.47, 37.76],
+      zoom: 11.5,
+    });
+    mapRef.current = map;
+
+    // Add price markers
+    items.forEach((item) => {
+      const el = document.createElement("div");
+      el.className = "mapbox-marker";
+      el.style.background = "#fff";
+      el.style.border = "1px solid #ccc";
+      el.style.borderRadius = "8px";
+      el.style.padding = "4px 10px";
+      el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+      el.style.fontWeight = "bold";
+      el.style.fontSize = "15px";
+      el.style.color = "#222";
+      el.innerText = item.price;
+      new mapboxgl.Marker(el)
+        .setLngLat(item.lngLat as [number, number])
+        .addTo(map);
+    });
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
+    };
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div className="my-6 p-6 border border-[#EFEFEF] rounded-[10px] space-y-4 w-full mx-auto">
       {/* Search + Filter */}
-      <div className=" flex items-center  justify-between gap-2">
-        <div className="flex items-center justify-between h-12 w-[110px] border  px-2 py-1 border-[#EFEFEF] rounded-[8px] ">
-          <span className="text-[16px] font-normal  text-[#2B3674]">
+      <div className="flex items-center justify-between gap-2">
+        <div className="p-2 flex items-center justify-between h-12 w-[110px] border border-[#EFEFEF] rounded-[8px]">
+          <span className="text-[16px] font-normal text-[#2B3674]">
             For sale
           </span>
           <img src="/Group 55.svg" alt="" />
         </div>
-        <div className="flex items-center h-12 w-full border  px-2 py-1 border-[#EFEFEF] rounded-[8px] ">
+        <div className="flex items-center h-12 p-2 w-full border border-[#EFEFEF] rounded-[8px]">
           <input
             type="text"
             placeholder="Search Shop"
-            className="w-full border-0 outline-none  bg-transparent"
+            className="w-full border-0 outline-none bg-transparent"
           />
           <img
             src="/search-01.svg"
@@ -45,12 +165,137 @@ const MapAndFilterData = () => {
             className="w-5 h-5 text-gray-500"
           />
         </div>
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="p-2 rounded-[8px] h-12 w-12 bg-[#2B3674] text-white"
-        >
-          <img src="/filter-horizontal.svg" alt="" />
-        </button>
+
+        <div className="relative">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="p-2 rounded-[8px] h-12 w-12 bg-[#2B3674] text-white"
+          >
+            <img src="/filter-horizontal.svg" alt="" />
+          </button>
+
+          {showFilters && (
+            <div className="p-6 bg-white w-[446px] h-[535px] border-[#EFEFEF] border-[1px] rounded-xl shadow-2xl absolute z-30 top-14 right-0 space-y-6 animate-fade-in">
+              <div>
+                <div className="text-[13.55px] font-medium text-[#555E67]">
+                  Filter By:
+                </div>
+
+                {/* Date Range */}
+                <div className="mt-6 flex justify-between text-sm font-semibold">
+                  <span className="text-[15.81px] text-[#2B3674]">
+                    Date Range
+                  </span>
+                  <button
+                    onClick={resetDateRange}
+                    className="text-[15.81px] text-[#2B3674]"
+                  >
+                    Reset
+                  </button>
+                </div>
+                <div className="mt-6 flex text-[#555E67] justify-between text-[13.55px] font-medium">
+                  <span>From</span>
+                  <span>To</span>
+                </div>
+                <div className="flex flex-row gap-2 mt-2">
+                  <div className="inline-flex w-[190px] h-[56px] items-center gap-2 p-2 border border-[#F2F2F4] rounded-xl bg-white">
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      dateFormat="MM-dd-yyyy"
+                      className={inputClass}
+                      placeholderText="09-10-2025"
+                    />
+                    {calendarIcon}
+                  </div>
+                  <div className="inline-flex w-[190px] h-[56px] items-center gap-2 p-2 border border-[#F2F2F4] rounded-xl bg-white">
+                    <DatePicker
+                      selected={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      dateFormat="MM-dd-yyyy"
+                      className={inputClass}
+                      placeholderText="09-11-2025"
+                    />
+                    {calendarIcon}
+                  </div>
+                </div>
+
+                <div className="flex justify-center items-center gap-x-4 mx-auto text-xs mt-4">
+                  <button
+                    className="text-[13.55px] border w-[120px] h-[56px] rounded-lg"
+                    onClick={handleToday}
+                  >
+                    Today
+                  </button>
+                  <button
+                    className="text-[13.55px] border w-[120px] h-[56px] rounded-lg"
+                    onClick={handleThisWeek}
+                  >
+                    This Week
+                  </button>
+                  <button
+                    className="text-[13.55px] border w-[120px] h-[56px] rounded-lg"
+                    onClick={handleThisMonth}
+                  >
+                    This Month
+                  </button>
+                </div>
+
+                {/* Sort Order */}
+                <div className="mt-6 flex justify-between text-sm font-semibold">
+                  <span className="text-[15.81px] text-[#2B3674]">Amount</span>
+                  <button
+                    onClick={resetSortOrder}
+                    className="text-[15.81px] text-[#2B3674]"
+                  >
+                    Reset
+                  </button>
+                </div>
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  className="w-full h-[56px] text-[#555E67] p-2 border border-[#F2F2F4] rounded-xl bg-white"
+                >
+                  <option>Low to High (Lowest First)</option>
+                  <option>High to Low (Highest First)</option>
+                </select>
+
+                {/* Price Range */}
+                <div className="mt-6 flex justify-between text-sm font-semibold">
+                  <span className="text-[15.81px] text-[#2B3674]">
+                    Price Range
+                  </span>
+                  <button
+                    onClick={resetPriceRange}
+                    className="text-[15.81px] text-[#2B3674]"
+                  >
+                    Reset
+                  </button>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={priceRange}
+                  onChange={(e) => setPriceRange(Number(e.target.value))}
+                  className="w-full mt-2 accent-[#2B3674]"
+                />
+
+                <div className="mt-4 flex justify-between gap-2">
+                  <button
+                    className="text-sm px-4 py-2 rounded text-[#414FF4] font-semibold bg-gray-100 hover:bg-violet-50 transition"
+                    onClick={resetAllFilters}
+                  >
+                    Reset All
+                  </button>
+                  <button className="text-sm px-4 py-2 rounded bg-[#414FF4] text-white font-semibold shadow transition">
+                    Apply Filters (3)
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Result Count */}
@@ -58,79 +303,22 @@ const MapAndFilterData = () => {
         <div className="text-[16px] text-[#2B3674] font-medium">
           1 - 8 of 8 Results
         </div>
-        <div className="flex items-center justify-between h-12 w-[110px] border  px-2 py-1 border-[#EFEFEF] rounded-[8px] ">
-          <span className="text-[16px] font-normal  text-[#2B3674]">
+        <div className="flex items-center justify-between p-2 h-12 w-[110px] border border-[#EFEFEF] rounded-[8px]">
+          <span className="text-[16px] font-normal text-[#2B3674]">
             Default sort
           </span>
           <img src="/Group 55.svg" alt="" />
         </div>
       </div>
 
-      {/* Filters Panel */}
-      {showFilters && (
-        <div className="p-4 bg-white border shadow rounded-lg w-full max-w-sm absolute z-50 right-6 top-32 space-y-4">
-          <div>
-            <div className="flex justify-between text-sm font-semibold">
-              <span>Date Range</span>
-              <button className="text-xs text-violet-600">Reset</button>
-            </div>
-            <div className="flex items-center space-x-2 mt-2">
-              <input
-                type="date"
-                className="border p-2 rounded w-full"
-                defaultValue="2025-09-10"
-              />
-              <input
-                type="date"
-                className="border p-2 rounded w-full"
-                defaultValue="2025-09-11"
-              />
-            </div>
-            <div className="flex justify-between text-xs mt-2">
-              <button className="text-gray-600">Today</button>
-              <button className="text-gray-600">This Week</button>
-              <button className="text-gray-600">This Month</button>
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between text-sm font-semibold">
-              <span>Amount</span>
-              <button className="text-xs text-violet-600">Reset</button>
-            </div>
-            <select className="border p-2 w-full mt-2 rounded text-sm">
-              <option>Low to High (Lowest First)</option>
-              <option>High to Low (Highest First)</option>
-            </select>
-          </div>
-
-          <div>
-            <div className="flex justify-between text-sm font-semibold">
-              <span>Price Range</span>
-              <button className="text-xs text-violet-600">Reset</button>
-            </div>
-            <input type="range" className="w-full mt-2" />
-          </div>
-
-          <div className="flex justify-between">
-            <button className="text-sm px-4 py-2 rounded border">
-              Reset All
-            </button>
-            <button className="text-sm px-4 py-2 rounded bg-violet-600 text-white">
-              Apply Filters (3)
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Main Grid - Responsive */}
+      {/* Map & Items */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        {/* Map */}
+        {/* Mapbox Map */}
         <div className="relative col-span-1 h-64 md:h-auto order-2 md:order-1">
-          <img
-            src="/image 3.svg"
-            alt="map"
-            className="rounded-lg object-cover h-full w-full min-h-[200px] md:min-h-0"
+          <div
+            ref={mapContainer}
+            className="rounded-lg "
+            style={{ height: "100%", minHeight: 256 }}
           />
         </div>
 
@@ -141,26 +329,21 @@ const MapAndFilterData = () => {
               key={idx}
               className="w-full max-w-[311.5px] h-[320px] sm:h-[385px] bg-white rounded-md shadow relative overflow-hidden mx-auto"
             >
-              {/* Top-Right Badge and Icon */}
               <div className="absolute top-3 right-3 flex items-center space-x-2 z-10">
-                {/* Featured Badge */}
                 <span className="bg-[#2B3674] text-white text-xs font-semibold px-3 py-1 rounded-full">
                   FEATURED
                 </span>
-                {/* Icon Button */}
                 <button className="bg-[#2B3674] w-7 h-7 rounded-full flex items-center justify-center">
                   <img src="/location-04.svg" alt="" />
                 </button>
               </div>
 
-              {/* Image */}
               <img
                 src={item.image}
                 alt={item.name}
                 className="rounded-md w-full h-[180px] sm:h-[240px] md:w-[311.5px] md:h-[385px] object-cover"
               />
 
-              {/* Overlay Text at Bottom of Image */}
               <div className="absolute bottom-0 left-0 w-full p-3 bg-[#2B3674B2]/70 rounded-b-md text-white">
                 <div className="text-[16px] font-medium">{item.name}</div>
                 <div className="text-2xl font-semibold">{item.price}</div>

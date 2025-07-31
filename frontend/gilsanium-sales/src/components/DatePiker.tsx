@@ -77,24 +77,23 @@ const DashboardStats: React.FC = () => {
   }, []);
 
   return (
-    <div className="mb-8">
+    <div className="mb-8 w-full">
       {/* Header with date filter and download button */}
-      <div className="flex items-center justify-between my-4 mx-10">
-        <div className="flex items-center space-x-4 ">
-          <div className=" w-[128px] h-[48px] flex items-center justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 my-4 md:mx-10 mx-2">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 w-full md:w-auto">
+          <div className="w-full sm:w-[128px] h-[48px] flex items-center justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg mx-auto sm:mx-0">
             <div
-              className="relative flex items-center space-x-2 text-base font-normal" 
+              className="relative flex items-center space-x-2 text-base font-normal w-full justify-center"
               ref={datePickerRef}
             >
-            <img
-              src="/Calendar-Edit-1--Streamline-Ultimate.svg"
-              alt="Calendar"
-              className="w-5 h-5"
-            />
-
+              <img
+                src="/Calendar-Edit-1--Streamline-Ultimate.svg"
+                alt="Calendar"
+                className="w-5 h-5"
+              />
               <button
                 onClick={handlePeriodClick}
-                className="text-sm font-normal text-[#2B3674] opacity- bg-white border-none outline-none cursor-pointer hover:text-gray-900 flex items-center space-x-1"
+                className="text-sm font-normal text-[#2B3674] bg-white border-none outline-none cursor-pointer hover:text-gray-900 flex items-center space-x-1"
               >
                 <span>{selectedPeriod}</span>
                 <svg
@@ -111,10 +110,9 @@ const DashboardStats: React.FC = () => {
                   />
                 </svg>
               </button>
-
               {/* Dropdown date picker for period selection */}
               {showDatePicker && (
-                <div className="absolute  top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg  p-4 z-10 min-w-[280px]">
+                <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg p-4 z-10 min-w-[220px] w-max max-w-xs">
                   <div className="space-y-2 mb-4 border border-[#EFEFEF] rounded-lg p-3">
                     <h3 className="text-sm font-medium text-[#2B3674] mb-2">
                       Select Period
@@ -180,30 +178,27 @@ const DashboardStats: React.FC = () => {
               )}
             </div>
           </div>
-
-          <span className="text-base font-normal w-[93px] h-[48px] flex items-center justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg">
-            {formatDisplayDate(startDate)}
-          </span>
-          <div className="flex items-center space-x-2 ">
+          <div className="flex flex-row items-center justify-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+            <span className="text-base font-normal w-full sm:w-[93px] h-[48px] flex items-center justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg">
+              {formatDisplayDate(startDate)}
+            </span>
             <span className="text-sm text-[#2b3674]">to</span>
-            <span className="text-sm font-normal w-[93px] h-[48px] flex items-center justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg">
+            <span className="text-sm font-normal w-full sm:w-[93px] h-[48px] flex items-center justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg">
               {formatDisplayDate(endDate)}
             </span>
           </div>
         </div>
-
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2 text-base font-normal w-[171px] h-[48px]  justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg">
-            <div className="w-8 h-8  flex items-center justify-center">
-             <img
-              src="/Remote-Access--Streamline-Ultimate.svg"
-              alt="Download"
-              className="w-5 h-5"
-            />
+        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 w-full md:w-auto mt-2 md:mt-0">
+          <div className="flex items-center space-x-2 text-base font-normal w-full sm:w-[171px] h-[48px] justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg">
+            <div className="w-8 h-8 flex items-center justify-center">
+              <img
+                src="/Remote-Access--Streamline-Ultimate.svg"
+                alt="Download"
+                className="w-5 h-5"
+              />
             </div>
             <span className="text-sm text-[#2B3674]">Customer Widget</span>
           </div>
-
           <button
             onClick={() => {
               // Generate CSV data based on current stats
@@ -228,10 +223,9 @@ const DashboardStats: React.FC = () => {
               link.click();
               document.body.removeChild(link);
             }}
-            className=" bg-[#414FF4] text-sm w-[123px] h-[48px] flex items-center justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg space-x-1"
+            className="bg-[#414FF4] text-sm w-full sm:w-[123px] h-[48px] flex items-center justify-center text-center text-[#2B3674] border border-[#EFEFEF] rounded-lg space-x-1"
           >
-       
-<img
+            <img
               src="/Download-Bottom--Streamline-Ultimate.svg"
               alt="Download"
               className="w-5 h-5"
@@ -240,8 +234,6 @@ const DashboardStats: React.FC = () => {
           </button>
         </div>
       </div>
-
-     
     </div>
   );
 };

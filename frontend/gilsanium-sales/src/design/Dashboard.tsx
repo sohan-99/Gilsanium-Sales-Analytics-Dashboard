@@ -10,14 +10,10 @@ const Dashboard = () => {
     setSidebarOpen(false);
   };
 
-  const handleToggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
   return (
     <div className="flex  bg-gray-50 font-sans">
       <Slidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
-      <MainPart onToggleSidebar={handleToggleSidebar} />
+      <MainPart />
     </div>
   );
 };

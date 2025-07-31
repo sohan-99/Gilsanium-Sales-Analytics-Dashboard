@@ -46,7 +46,7 @@ const data = [
 
 const SealsAnalysis: React.FC = () => {
   return (
-    <div className="flex flex-col lg:flex-row gap-6 w-full">
+    <div className="flex flex-col lg:flex-row gap-6 lg:w-full">
       {/* Sale Analytics Card */}
       <div className="bg-white rounded-[10px] border border-[#EFEFEF] p-5 flex flex-col justify-between w-[617px] h-[364px]">
         <div className="flex items-center justify-between  mb-4">
@@ -81,7 +81,7 @@ const SealsAnalysis: React.FC = () => {
           </div>
         </div>
         {/* Chart */}
-        <div className="w-[617px] h-[300px]">
+        <div className="lg:w-[617px] h-[300px]">
           <BarChart width={585} height={268} data={data}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis
