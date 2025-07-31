@@ -6,7 +6,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   Cell,
 } from "recharts";
 import React from "react";
@@ -107,7 +106,7 @@ const SealsAnalysis: React.FC = () => {
             />
             <YAxis
               dataKey="pv"
-              tickFormatter={value => `${value.toFixed(1)}k`}
+              tickFormatter={(value) => `${value.toFixed(1)}k`}
             />
             <Tooltip cursor={{ fill: "rgba(65, 79, 244, 0.1)" }} />
             {/* <Legend /> */}
