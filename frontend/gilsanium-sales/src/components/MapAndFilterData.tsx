@@ -158,7 +158,7 @@ const MapAndFilterData = () => {
         .marker-content::after {
           content: '';
           position: absolute;
-          bottom: -10px;
+          bottom: -10px;       
           left: 50%;
           transform: translateX(-50%);
           width: 0;
@@ -220,7 +220,7 @@ const MapAndFilterData = () => {
     // Store marker elements for cleanup
     const markerElements: HTMLDivElement[] = [];
 
-    // Function to update marker positions
+
     const updateMarkers = () => {
       items.forEach((item, index) => {
         const pixel = map.project(item.lngLat as [number, number]);
