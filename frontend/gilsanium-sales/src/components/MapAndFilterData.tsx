@@ -210,9 +210,11 @@ const MapAndFilterData = () => {
 
     // Hide Mapbox watermark/logo
     const mapContainer_element = map.getContainer();
-    const mapboxLogo = mapContainer_element.querySelector('.mapboxgl-ctrl-logo');
+    const mapboxLogo = mapContainer_element.querySelector(
+      ".mapboxgl-ctrl-logo"
+    );
     if (mapboxLogo) {
-      (mapboxLogo as HTMLElement).style.display = 'none';
+      (mapboxLogo as HTMLElement).style.display = "none";
     }
     mapRef.current = map;
 
