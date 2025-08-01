@@ -26,9 +26,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, user }) => {
               />
             </svg>
           </button>
-          <div className="text-secondary-200 truncate">
-            <h1 className="text-base md:text-lg font-medium truncate">Sales Overview</h1>
-            <p className="text-xs font-normal truncate">
+          <div className="text-secondary-200 ">
+            <h1 className=" md:text-lg font-medium ">Sales Overview</h1>
+            <p className="text-xs font-normal">
               Monitor all your content activity
             </p>
           </div>

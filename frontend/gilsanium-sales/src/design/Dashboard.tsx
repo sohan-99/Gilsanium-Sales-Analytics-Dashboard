@@ -1,10 +1,31 @@
 // Main dashboard layout component
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Slidebar from "../layout/Slidebar";
 import MainPart from "../layout/MainPart";
 
 const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Default to true for desktop
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Default to false initially
+
+  // Set sidebar open based on screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        // lg breakpoint
+        setSidebarOpen(true);
+      } else {
+        setSidebarOpen(false);
+      }
+    };
+
+    // Set initial state
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleCloseSidebar = () => {
     setSidebarOpen(false);

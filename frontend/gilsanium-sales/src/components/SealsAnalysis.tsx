@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BarChart,
   Bar,
@@ -8,7 +7,7 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ProductMonotoringCard from "./ProductMonotoringCard";
 
 const data = [
@@ -45,44 +44,77 @@ const data = [
 ];
 
 const SealsAnalysis: React.FC = () => {
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    // Set initial width
+    setWindowWidth(window.innerWidth);
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Get chart dimensions based on breakpoints
+  const getChartDimensions = () => {
+    if (windowWidth >= 1024) {
+      // lg
+      return { width: 585, height: 268 };
+    } else if (windowWidth >= 768) {
+      // md
+      return { width: 450, height: 220 };
+    } else {
+      // sm
+      return { width: 220, height: 180 };
+    }
+  };
+
+  const { width, height } = getChartDimensions();
+
   return (
-    <div className="flex flex-col lg:flex-row gap-6 lg:w-full">
+    <div className="lg:flex flex-col lg:flex-row lg:gap-6 lg:w-full">
       {/* Sale Analytics Card */}
-      <div className="bg-white rounded-[10px] border border-[#EFEFEF] p-5 flex flex-col justify-between w-[617px] h-[364px]">
-        <div className="flex items-center justify-between  mb-4">
-          <div className="flex items-center gap-2 text-[#2B3674] font-normal text-[16px]">
+      <div className="bg-white rounded-[10px] border border-[#EFEFEF] p-5 lg:flex lg:flex-col justify-between lg:w-[617px] lg:h-[364px]">
+        <div className="lg:flex items-center justify-between  mb-4">
+          <div className="lg:flex items-center gap-2 text-[#2B3674] lg:font-normal lg:text-[16px]">
             <img
               src="/Dual-Sim-Signal-4--Streamline-Ultimate.svg"
               alt="icon"
-              className="w-4 h-4"
+              className="lg:w-4 lg:h-4"
             />
-            <span className="font-normal text-[16px] text-[#2B3674] opacity-80">
+            <span className="lg:font-normal lg:text-[16px] text-[#2B3674] opacity-80">
               Sale Analytics
             </span>
           </div>
           <div className="flex items-center gap-4 text-xs font-medium">
             <span className="flex items-center gap-1">
               <span className="inline-block w-3 h-3 rounded bg-[#BDBDBD]"></span>{" "}
-              <span className="font-normal text-[16px] text-[#2B3674] opacity-80">
+              <span className="lg:font-normal lg:text-[16px] text-[#2B3674] opacity-80">
                 Refund
               </span>
             </span>
             <span className="flex items-center gap-1">
               <span className="inline-block w-3 h-3 rounded bg-[#414FF4]"></span>{" "}
-              <span className="font-normal text-[16px] text-[#2B3674] opacity-80">
+              <span className="lg:font-normal lg:text-[16px] text-[#2B3674] opacity-80">
                 Checkout
               </span>
             </span>
 
-            <button className="px-4 py-2 border border-[#DFDFDF] rounded-[10px] text-xs text-[#414FF4] opacity-80 bg-white flex items-center gap-2 font-normal shadow-none">
+            <button className="lg:px-4 lg:py-2 border border-[#DFDFDF] rounded-[10px] lg:text-xs text-[#414FF4] opacity-80 bg-white flex items-center gap-2  lg:font-normal shadow-none">
               This Month
-              <img src="/CaretDown (1).svg" alt="" className="w-4 h-4" />
+              <img src="/CaretDown (1).svg" alt="" className="lg:w-4 lg:h-4" />
             </button>
           </div>
         </div>
         {/* Chart */}
         <div className="lg:w-[617px] h-[300px]">
-          <BarChart width={585} height={268} data={data}>
+          <BarChart width={width} height={height} data={data}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="name"

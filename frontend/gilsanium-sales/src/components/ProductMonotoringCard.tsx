@@ -30,7 +30,7 @@ const productMonitoring = [
 const ProductMonotoringCard = () => {
   return (
     
-        <div className="bg-white rounded-[10px] border border-[#EFEFEF] p-5 flex flex-col justify-between w-[468px] h-[364px]">
+        <div className="bg-white rounded-[10px] border border-[#EFEFEF] p-5 flex flex-col justify-between lg:w-[468px] lg:h-[364px]">
           <div className="flex items-center justify-between mb-4">
             <div className="flex flex-col gap-0">
               <div className="flex items-center gap-2">
