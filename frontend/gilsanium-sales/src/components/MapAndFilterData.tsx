@@ -105,6 +105,28 @@ const MapAndFilterData = () => {
     resetPriceRange();
   };
 
+  // Count active filters
+  const getActiveFiltersCount = () => {
+    let count = 0;
+
+    // Check if date range is set
+    if (startDate || endDate) {
+      count++;
+    }
+
+    // Check if sort order is changed from default
+    if (sortOrder !== "Low to High (Lowest First)") {
+      count++;
+    }
+
+    // Check if price range is changed from default
+    if (priceRange !== 50) {
+      count++;
+    }
+
+    return count;
+  };
+
   // Mapbox setup
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -159,6 +181,12 @@ const MapAndFilterData = () => {
           border-top: 8px solid #ffffff;
           z-index: 1;
         }
+        .mapboxgl-ctrl-logo {
+          display: none !important;
+        }
+        .mapboxgl-ctrl-attrib {
+          display: none !important;
+        }
       `;
       document.head.appendChild(style);
     }
@@ -179,6 +207,13 @@ const MapAndFilterData = () => {
       zoom: 11.5,
       attributionControl: false,
     });
+
+    // Hide Mapbox watermark/logo
+    const mapContainer_element = map.getContainer();
+    const mapboxLogo = mapContainer_element.querySelector('.mapboxgl-ctrl-logo');
+    if (mapboxLogo) {
+      (mapboxLogo as HTMLElement).style.display = 'none';
+    }
     mapRef.current = map;
 
     // Store marker elements for cleanup
@@ -379,7 +414,7 @@ const MapAndFilterData = () => {
                     Reset All
                   </button>
                   <button className="text-sm px-4 py-2 rounded bg-[#414FF4] text-white font-semibold shadow transition">
-                    Apply Filters (3)
+                    Apply Filters ({getActiveFiltersCount()})
                   </button>
                 </div>
               </div>
