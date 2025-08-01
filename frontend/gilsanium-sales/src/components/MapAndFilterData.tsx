@@ -113,6 +113,56 @@ const MapAndFilterData = () => {
     mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
     console.log("Mapbox Access Token:", mapboxgl.accessToken);
 
+    // Inject marker-content CSS into document head if not already present
+    const markerStyleId = "marker-content-style";
+    if (!document.getElementById(markerStyleId)) {
+      const style = document.createElement("style");
+      style.id = markerStyleId;
+      style.innerHTML = `
+        .marker-content {
+          background: white;
+          color: #333333;
+          padding: 8px 12px;
+          border-radius: 8px;
+          text-align: center;
+          min-width: 80px;
+          position: relative;
+          border: 2px solid #333333;
+          display: inline-block;
+          font-size: 22px;
+          font-weight: 500;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .marker-content::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-top: 10px solid #333333;
+        }
+        .marker-content::before {
+          content: '';
+          position: absolute;
+          bottom: -8
+          px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          border-top: 8px solid #ffffff;
+          z-index: 1;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
     if (!mapboxgl.accessToken) {
       console.error(
         "Mapbox access token is not set. Please check your .env file."
@@ -151,16 +201,8 @@ const MapAndFilterData = () => {
     map.on("load", () => {
       items.forEach((item) => {
         const marker = document.createElement("div");
-        marker.className = "mapbox-marker";
+        marker.className = "marker-content";
         marker.style.position = "absolute";
-        marker.style.background = "#fff";
-        marker.style.border = "1px solid black";
-        marker.style.borderRadius = "8px";
-        marker.style.padding = "4px 10px";
-        marker.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
-        marker.style.fontWeight = "bold";
-        marker.style.fontSize = "15px";
-        marker.style.color = "#222";
         marker.style.pointerEvents = "none"; // Prevent interference with map interactions
         marker.style.zIndex = "1";
         marker.innerText = item.locationDistance;
