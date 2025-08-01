@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-// sk.eyJ1IjoibWFydWYtNjkiLCJhIjoiY21kcjl3anh3MGJodjJrczZsdjRrbHlmYiJ9.bQqom_15imhYIA3fWbkjDg
+
 const calendarIcon = (
   <span className="flex items-center justify-center bg-[#F7F7F9] rounded-lg p-1.5 ml-2">
     <svg width="20" height="20" fill="none" stroke="#8C929A">
@@ -31,24 +31,28 @@ const MapAndFilterData = () => {
       price: "$1,240",
       image: "/e950145c72e49e7de18fa4432cecc3cc43d4dbd0.png",
       lngLat: [-122.494, 37.786],
+      locationDistance: "$5.4m",
     },
     {
       name: "bag",
-      price: "$1,240",
+      price: "$1,340",
       image: "/110ac03843eaa6d28e5deaf9f5a3f6f757f8fdc4.jpg",
       lngLat: [-122.472, 37.771],
+      locationDistance: "$1.2m",
     },
     {
       name: "Monbitor",
-      price: "$1,240",
+      price: "$1,440",
       image: "/2489d9e21fd5a6ecbfd7fd619f5cc0969ddeb4b6.jpg",
-      lngLat: [-122.447, 37.759],
+      lngLat: [-122.457, 37.759],
+      locationDistance: "$890k",
     },
     {
       name: "iPhone",
-      price: "$1,240",
+      price: "$1,540",
       image: "/5e1f4adcf39c20de9a0de0f18c89bb26f2c28c5e.png",
-      lngLat: [-122.505, 37.743],
+      lngLat: [-122.49, 37.743],
+      locationDistance: "$1.5m",
     },
   ];
 
@@ -106,8 +110,16 @@ const MapAndFilterData = () => {
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
-    mapboxgl.accessToken =
-      "pk.eyJ1IjoibWFydWYtNjkiLCJhIjoiY21kcThhZnUxMDM2ZjJqcjV3amtpYnNmOCJ9.1tKWcQqfekzdgMZGoUubfg";
+    mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+    console.log("Mapbox Access Token:", mapboxgl.accessToken);
+
+    if (!mapboxgl.accessToken) {
+      console.error(
+        "Mapbox access token is not set. Please check your .env file."
+      );
+      return;
+    }
+
     if (mapRef.current) return; // Prevent re-initialization
     if (!mapContainer.current) return;
     const map = new mapboxgl.Map({
@@ -115,28 +127,64 @@ const MapAndFilterData = () => {
       style: "mapbox://styles/mapbox/light-v11",
       center: [-122.47, 37.76],
       zoom: 11.5,
+      attributionControl: false,
     });
     mapRef.current = map;
 
-    // Add price markers
-    items.forEach((item) => {
-      const el = document.createElement("div");
-      el.className = "mapbox-marker";
-      el.style.background = "#fff";
-      el.style.border = "1px solid #ccc";
-      el.style.borderRadius = "8px";
-      el.style.padding = "4px 10px";
-      el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
-      el.style.fontWeight = "bold";
-      el.style.fontSize = "15px";
-      el.style.color = "#222";
-      el.innerText = item.price;
-      new mapboxgl.Marker(el)
-        .setLngLat(item.lngLat as [number, number])
-        .addTo(map);
+    // Store marker elements for cleanup
+    const markerElements: HTMLDivElement[] = [];
+
+    // Function to update marker positions
+    const updateMarkers = () => {
+      items.forEach((item, index) => {
+        const pixel = map.project(item.lngLat as [number, number]);
+        const marker = markerElements[index];
+        if (marker) {
+          marker.style.left = `${pixel.x}px`;
+          marker.style.top = `${pixel.y}px`;
+          marker.style.transform = "translate(-50%, -100%)"; // Center the marker
+        }
+      });
+    };
+
+    // Add locationDistance markers as lng/lat overlays inside the map container
+    map.on("load", () => {
+      items.forEach((item) => {
+        const marker = document.createElement("div");
+        marker.className = "mapbox-marker";
+        marker.style.position = "absolute";
+        marker.style.background = "#fff";
+        marker.style.border = "1px solid black";
+        marker.style.borderRadius = "8px";
+        marker.style.padding = "4px 10px";
+        marker.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+        marker.style.fontWeight = "bold";
+        marker.style.fontSize = "15px";
+        marker.style.color = "#222";
+        marker.style.pointerEvents = "none"; // Prevent interference with map interactions
+        marker.style.zIndex = "1";
+        marker.innerText = item.locationDistance;
+
+        map.getContainer().appendChild(marker);
+        markerElements.push(marker);
+      });
+
+      // Initial marker positioning
+      updateMarkers();
     });
 
+    // Update marker positions when map moves, zooms, or rotates
+    map.on("move", updateMarkers);
+    map.on("zoom", updateMarkers);
+    map.on("rotate", updateMarkers);
+
     return () => {
+      // Clean up markers
+      markerElements.forEach((marker) => {
+        if (marker.parentNode) {
+          marker.parentNode.removeChild(marker);
+        }
+      });
       map.remove();
       mapRef.current = null;
     };
@@ -314,10 +362,10 @@ const MapAndFilterData = () => {
       {/* Map & Items */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
         {/* Mapbox Map */}
-        <div className="relative col-span-1 h-64 md:h-auto order-2 md:order-1">
+        <div className="relative h-[320px] col-span-1 md:h-auto order-2 md:order-1 overflow-hidden">
           <div
             ref={mapContainer}
-            className="rounded-lg "
+            className="rounded-lg w-full h-full"
             style={{ height: "100%", minHeight: 256 }}
           />
         </div>
