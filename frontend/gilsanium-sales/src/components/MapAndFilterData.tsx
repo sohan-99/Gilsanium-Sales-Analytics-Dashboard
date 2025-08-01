@@ -439,41 +439,49 @@ const MapAndFilterData = () => {
       </div>
 
       {/* Map & Items */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
         {/* Mapbox Map */}
-        <div className="relative h-[320px] col-span-1 md:h-auto order-2 md:order-1 overflow-hidden">
+        <div className="relative h-[280px] sm:h-[320px] lg:h-auto col-span-1 order-2 lg:order-1 overflow-hidden">
           <div
             ref={mapContainer}
             className="rounded-lg w-full h-full"
-            style={{ height: "100%", minHeight: 256 }}
+            style={{ height: "100%", minHeight: "280px" }}
           />
         </div>
 
         {/* Items */}
-        <div className="col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-[10px] order-1 md:order-2">
+        <div className="col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 order-1 lg:order-2">
           {items.map((item, idx) => (
             <div
               key={idx}
-              className="w-full max-w-[311.5px] h-[320px] sm:h-[385px] bg-white rounded-md shadow relative overflow-hidden mx-auto"
+              className="w-full max-w-[320px] sm:max-w-[280px] lg:max-w-[311.5px] h-[280px] sm:h-[320px] lg:h-[385px] bg-white rounded-md shadow relative overflow-hidden mx-auto"
             >
-              <div className="absolute top-3 right-3 flex items-center space-x-2 z-10">
-                <span className="bg-[#2B3674] text-white text-xs font-semibold px-3 py-1 rounded-full">
+              <div className="absolute top-3 right-3 flex items-center space-x-1 sm:space-x-2 z-10">
+                <span className="bg-[#2B3674] text-white text-[10px] sm:text-xs font-semibold px-2 sm:px-3 py-1 rounded-full">
                   FEATURED
                 </span>
-                <button className="bg-[#2B3674] w-7 h-7 rounded-full flex items-center justify-center">
-                  <img src="/location-04.svg" alt="" />
+                <button className="bg-[#2B3674] w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center">
+                  <img
+                    src="/location-04.svg"
+                    alt=""
+                    className="w-3 h-3 sm:w-4 sm:h-4"
+                  />
                 </button>
               </div>
 
               <img
                 src={item.image}
                 alt={item.name}
-                className="rounded-md w-full h-[180px] sm:h-[240px] md:w-[311.5px] md:h-[385px] object-cover"
+                className="rounded-md w-full h-[200px] sm:h-[220px] lg:h-[300px] object-cover"
               />
 
-              <div className="absolute bottom-0 left-0 w-full p-3 bg-[#2B3674B2]/70 rounded-b-md text-white">
-                <div className="text-[16px] font-medium">{item.name}</div>
-                <div className="text-2xl font-semibold">{item.price}</div>
+              <div className="absolute bottom-0 left-0 w-full p-2 sm:p-3 bg-[#2B3674B2]/70 rounded-b-md text-white">
+                <div className="text-[14px] sm:text-[16px] font-medium">
+                  {item.name}
+                </div>
+                <div className="text-xl sm:text-2xl font-semibold">
+                  {item.price}
+                </div>
               </div>
             </div>
           ))}
