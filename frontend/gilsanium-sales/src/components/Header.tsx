@@ -98,7 +98,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, user }) => {
 
           {/* Profile Dropdown Menu */}
           {isProfileDropdownOpen && (
-            <div className="absolute top-full right-0 mt-2 bg-white border border-[#EFEFEF] rounded-[12px] shadow-lg w-72 z-50">
+            <div className="absolute top-full right-0 mt-2 bg-white border border-[#EFEFEF] items-center mx-auto rounded-[12px] shadow-lg w-72 z-50">
               {/* User Info Section */}
               <div className="p-4 border-b border-gray-100">
                 <div className="flex items-center gap-3">

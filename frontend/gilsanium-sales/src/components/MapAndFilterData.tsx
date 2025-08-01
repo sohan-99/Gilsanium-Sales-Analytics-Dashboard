@@ -187,8 +187,7 @@ const MapAndFilterData = () => {
         .marker-content::before {
           content: '';
           position: absolute;
-          bottom: -8
-          px;
+          bottom: -8px;
           left: 50%;
           transform: translateX(-50%);
           width: 0;
