@@ -131,6 +131,23 @@ const MapAndFilterData = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
+  // Get initial zoom based on screen size
+  const getInitialZoom = () => {
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 640) {
+        // Mobile devices - more zoomed out
+        return 9.5;
+      } else if (window.innerWidth < 1024) {
+        // Tablet devices
+        return 10.5;
+      } else {
+        // Desktop
+        return 11.5;
+      }
+    }
+    return 11.5; // Default fallback
+  };
+
   useEffect(() => {
     mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
     console.log("Mapbox Access Token:", mapboxgl.accessToken);
@@ -204,7 +221,7 @@ const MapAndFilterData = () => {
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/light-v11",
       center: [-122.47, 37.76],
-      zoom: 11.5,
+      zoom: getInitialZoom(),
       attributionControl: false,
     });
 
